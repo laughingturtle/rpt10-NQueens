@@ -77,19 +77,17 @@
     // ROWS - run from left to right
     // --------------------------------------------------------------
     //
+    // if (nRow : nCol) = 1, and any in nRow or nCol = 1,
+    // and any in loop nRow+1 : nCol+1 and nRow-1 : nCol-1 = 1,
+    // then return true
+    // else return false
     // test if a specific row on this board contains a conflict
     hasRowConflictAt: function(rowIndex) {
-      //if (nRow : nCol) = 1, and any in nRow or nCol = 1,
-      //and any in loop nRow+1 : nCol+1 and nRow-1 : nCol-1 = 1,
-      //then return true
-      //else return false
       var test = 0;
+      var n = this.attributes.n;
 
-      for(var i = 0; i < this.attributes[rowIndex].length; i++){
-       // debugger;
-        // console.log('my row = ', this.attributes[row]);
-        // console.log('my square = ', this.attributes[row][i]);
-        if(this.attributes[rowIndex][i] === 1) {
+      for(var i = 0; i < n; i++){
+        if(this.get(rowIndex)[i] === 1) {
           test++;
         }
       }
@@ -101,22 +99,17 @@
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
-      var test = 0;
+      var test = false;
+      var n = this.attributes.n;
 
-      for(var row in this.attributes){
-        for(var i = 0; i < this.attributes[row].length; i++){
-          if(this.attributes[row][i] === 1) {
-            test++;
+        for(var i = 0; i < n; i++){
+          if(this.hasRowConflictAt(i)){
+            test = true;
           }
         }
-      }
-      if (test > 1) {
-        return true;
-      }
-      return false;
+
+      return test;
     },
-
-
 
     // COLUMNS - run from top to bottom
     // --------------------------------------------------------------
@@ -124,14 +117,12 @@
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function(colIndex) {
       var test = 0;
-
-      //
-
-      for(var row in this.attributes){
-        if(this.attributes[row][colIndex] === 1) {
+      var n = this.attributes.n;
+     for(var i = 0; i < n; i++){
+        if(this.get(i)[colIndex] === 1) {
           test++;
         }
-      }
+     }
       if (test > 1) {
         return true;
       }
@@ -140,24 +131,13 @@
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
-      var test = 0;
-      var column;
-
-      for(var row in this.attributes){
-        for (var i = 0; i < this.attributes[row].length; i++){
-          if (this.attributes[row][i] === 1) {
-            column = i;
-            test++;
-          }
-          if(this.attributes[row][i] === 1 && column === i){
-            test++;
+      let test = false;
+        for(var i = 0; i < this.attributes.n; i++){
+          if(this.hasColConflictAt(i)){
+            test = true;
           }
         }
-      }
-      if (test > 1) {
-        return true;
-      }
-      return false;
+       return test;
     },
 
 
