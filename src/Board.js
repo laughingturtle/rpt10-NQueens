@@ -79,12 +79,41 @@
     //
     // test if a specific row on this board contains a conflict
     hasRowConflictAt: function(rowIndex) {
-      return false; // fixme
+      //if (nRow : nCol) = 1, and any in nRow or nCol = 1,
+      //and any in loop nRow+1 : nCol+1 and nRow-1 : nCol-1 = 1,
+      //then return true
+      //else return false
+      var test = 0;
+
+      for(var i = 0; i < this.attributes[rowIndex].length; i++){
+       // debugger;
+        // console.log('my row = ', this.attributes[row]);
+        // console.log('my square = ', this.attributes[row][i]);
+        if(this.attributes[rowIndex][i] === 1) {
+          test++;
+        }
+      }
+      if (test > 1) {
+        return true;
+      }
+      return false;
     },
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
-      return false; // fixme
+      var test = 0;
+
+      for(var row in this.attributes){
+        for(var i = 0; i < this.attributes[row].length; i++){
+          if(this.attributes[row][i] === 1) {
+            test++;
+          }
+        }
+      }
+      if (test > 1) {
+        return true;
+      }
+      return false;
     },
 
 
@@ -94,12 +123,41 @@
     //
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function(colIndex) {
-      return false; // fixme
+      var test = 0;
+
+      //
+
+      for(var row in this.attributes){
+        if(this.attributes[row][colIndex] === 1) {
+          test++;
+        }
+      }
+      if (test > 1) {
+        return true;
+      }
+      return false;
     },
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
-      return false; // fixme
+      var test = 0;
+      var column;
+
+      for(var row in this.attributes){
+        for (var i = 0; i < this.attributes[row].length; i++){
+          if (this.attributes[row][i] === 1) {
+            column = i;
+            test++;
+          }
+          if(this.attributes[row][i] === 1 && column === i){
+            test++;
+          }
+        }
+      }
+      if (test > 1) {
+        return true;
+      }
+      return false;
     },
 
 
@@ -116,7 +174,6 @@
     hasAnyMajorDiagonalConflicts: function() {
       return false; // fixme
     },
-
 
 
     // Minor Diagonals - go from top-right to bottom-left
