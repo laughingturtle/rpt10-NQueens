@@ -141,18 +141,61 @@
     },
 
 
+    // git test comment
 
     // Major Diagonals - go from top-left to bottom-right
     // --------------------------------------------------------------
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+     // console.log('passed in number = ', majorDiagonalColumnIndexAtFirstRow);
+      var n = this.attributes.n;
+      let rowIndex = 0;
+      let colIndex = majorDiagonalColumnIndexAtFirstRow;
+      let test = 0;
+      if(colIndex < 0){
+        rowIndex = Math.abs(colIndex);
+        colIndex = 0;
+      }
+      //console.log(`coordinates = ( Row: ${rowIndex}, ColIndex: ${colIndex})`);
+
+      let that = this;
+
+      function traverse(row, col){
+
+        // get the row element index and col index, check row + 1 and column + 1 to see if it === 1
+        if(row === n || col === n){
+          return test;
+        }
+
+        if(that.get(row)[col] === 1){
+          test++;
+        }
+        if(test > 1){
+          return test;
+        }
+        traverse(row +1, col +1);
+      }
+
+      traverse(rowIndex, colIndex);
+      if (test > 1) {
+        return true;
+      }
+      return false; // fix me - NO!
+
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-      return false; // fixme
+      let test = false;
+      //debugger;
+        for(var i = -3; i < this.attributes.n; i++){
+          console.log('my this = ', this.hasMajorDiagonalConflictAt(i));
+          if(this.hasMajorDiagonalConflictAt(i)){
+           test = true;
+          }
+        }
+      return test; // fixme - ok
     },
 
 
@@ -161,12 +204,55 @@
     //
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      var n = this.attributes.n;
+      let rowIndex = 0;
+      let colIndex = minorDiagonalColumnIndexAtFirstRow;
+      let test = 0;
+      if(colIndex > n -1){
+        rowIndex = colIndex - (n-1);
+        colIndex = n-1;
+      }
+      console.log('input = ', minorDiagonalColumnIndexAtFirstRow)
+      console.log(`coordinates = ( Row: ${rowIndex}, ColIndex: ${colIndex})`);
+
+      let that = this;
+
+      //debugger;
+      function traverse(row, col){
+
+        // get the row element index and col index, check row - 1 and column - 1 to see if it === 1
+        if(row === n || col < 0){
+          return test;
+        }
+
+        if(that.get(row)[col] === 1){
+          test++;
+        }
+        if(test > 1){
+          return test;
+        }
+        traverse(row +1, col -1);
+      }
+
+      traverse(rowIndex, colIndex);
+      if (test > 1) {
+        return true;
+      }
+      return false; // fix me - NO!
     },
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
-      return false; // fixme
+      let test = false;
+      let n = (this.attributes.n -1) * 2;
+      //debugger;
+        for(var i = 0; i < n; i++){
+         // console.log('my this = ', this.hasMinorDiagonalConflictAt(i));
+          if(this.hasMinorDiagonalConflictAt(i)){
+           test = true;
+          }
+        }
+      return test; // fixme - ok
     }
 
     /*--------------------  End of Helper Functions  ---------------------*/
