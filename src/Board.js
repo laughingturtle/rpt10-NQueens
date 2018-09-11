@@ -61,7 +61,6 @@
       );
     },
 
-
 /*
          _             _     _
      ___| |_ __ _ _ __| |_  | |__   ___ _ __ ___ _
@@ -168,6 +167,7 @@
           return test;
         }
 
+        // debugger;
         if(that.get(row)[col] === 1){
           test++;
         }
@@ -188,9 +188,11 @@
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
       let test = false;
+      let n = (this.attributes.n *2) -1;
+      let m = (this.attributes.n -1);
       //debugger;
-        for(var i = -3; i < this.attributes.n; i++){
-          console.log('my this = ', this.hasMajorDiagonalConflictAt(i));
+        for(var i = -m; i < n; i++){
+        // console.log('my this = ', this.hasMajorDiagonalConflictAt(i));
           if(this.hasMajorDiagonalConflictAt(i)){
            test = true;
           }
@@ -212,19 +214,17 @@
         rowIndex = colIndex - (n-1);
         colIndex = n-1;
       }
-      console.log('input = ', minorDiagonalColumnIndexAtFirstRow)
-      console.log(`coordinates = ( Row: ${rowIndex}, ColIndex: ${colIndex})`);
+    //  console.log('input = ', minorDiagonalColumnIndexAtFirstRow)
+    //  console.log(`coordinates = ( Row: ${rowIndex}, ColIndex: ${colIndex})`);
 
       let that = this;
 
       //debugger;
       function traverse(row, col){
-
         // get the row element index and col index, check row - 1 and column - 1 to see if it === 1
         if(row === n || col < 0){
           return test;
         }
-
         if(that.get(row)[col] === 1){
           test++;
         }
@@ -244,7 +244,7 @@
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
       let test = false;
-      let n = (this.attributes.n -1) * 2;
+      let n = (this.attributes.n * 2) - 1;
       //debugger;
         for(var i = 0; i < n; i++){
          // console.log('my this = ', this.hasMinorDiagonalConflictAt(i));
