@@ -68,29 +68,39 @@ window.findNQueensSolution = function(n) {
   var queens = 0;
 
   var loopThru = function(row, col) {
-    // if (n === 1){
-    // debugger;
-    // }
+  if (n === 6){
+    debugger;
+  }
 
     for(var i = 0; i < n; i++) {
       for(var j = 0; j < n; j++){
-
         if(i === 0 && j === 0){
+            var temp = j;
             j = col;
+
+            for(var k=0; k<n; k++) {
+              board.attributes[k].fill(0);
+              queens = 0;
+            }
             board.togglePiece(i, j);
+            queens = queens +1;
+
             console.log('first = ', board.rows());
-            console.log("j = ", j)
-            queens++;
-           // j++;
+        //  console.log("j = ", j)
+            //j++;
+            j = temp;
+            console.log('j = ', j)
         }
 
         if(board.get(i)[j] === 0) {
+          console.log('j2 = ', j);
           board.togglePiece(i, j);
-          console.log('after = ', board.rows());
-          queens++;
+          console.log('next = ', board.rows());
+          queens = queens +1;
           if(board.hasAnyQueensConflicts()) {
             board.togglePiece(i, j);
-            queens--;
+            queens = queens -1;
+            console.log('after removal = ', board.rows());
           }
         }
       }
@@ -102,7 +112,7 @@ window.findNQueensSolution = function(n) {
     if (queens === n) {
       return board.rows();
     } else if (col < n-1) {
-      col++;
+      col = col +1;
       loopThru(0, col);
     }
       /* else if (col >= n && row < n){
