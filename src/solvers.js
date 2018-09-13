@@ -54,103 +54,210 @@ window.countNRooksSolutions = function(n) {
 };
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
-window.findNQueensSolution = function(n) {
-  console.log('outer function = ', n);
-  console.log(`__NEW BOARD__`)
+window.findNQueensSolution = function (n, row, col) {
+  console.log(`NEW BOARD ==>`)
+  console.log('  input = ', n);
+  console.log('  algorithm running . . .')
   let board = new Board({ n: n });
   let solution = board.rows();
-  let colIndex = 0;
+  var queens = 0;
 
+  /* this if-block checks for two specific cases that need no iteration */
   if (n === 2 || n === 3) {
     return solution;
   }
 
-  var queens = 0;
+  var loopThru = function (row, col) {
 
-  var loopThru = function(row, col) {
-  if (n === 6){
-    debugger;
-  }
+    /*
+      these loops interate through the board squares
+    */
+    for (var i = 0; i < n; i++) {
+      for (var j = 0; j < n; j++) {
 
-    for(var i = 0; i < n; i++) {
-      for(var j = 0; j < n; j++){
-        if(i === 0 && j === 0){
-            var temp = j;
-            j = col;
+        /*
+          this if-block sets board afresh and places new FIRST QUEEN
+        */
+        if (i === 0 && j === 0) {
 
-            for(var k=0; k<n; k++) {
-              board.attributes[k].fill(0);
-              queens = 0;
-            }
-            board.togglePiece(i, j);
-            queens = queens +1;
+          //this loop ensures board is set afresh
+          for (var k = 0; k < n; k++) {
+            board.attributes[k].fill(0);
+            queens = 0;
+          }
 
-            console.log('first = ', board.rows());
-        //  console.log("j = ", j)
-            //j++;
-            j = temp;
-            console.log('j = ', j)
+          //sets FIRST QUEEN on fresh board.
+          //this Queen remians at this position within the i & j for-loops.
+          board.togglePiece(row, col);
+          queens = queens + 1;
         }
 
-        if(board.get(i)[j] === 0) {
-          console.log('j2 = ', j);
+        /*
+          this if-block places a subsequent queen,
+          then checks for conflicts,
+          and removes subsequent queen if conflict is found
+        */
+        if (board.get(i)[j] === 0) {
           board.togglePiece(i, j);
-          console.log('next = ', board.rows());
-          queens = queens +1;
-          if(board.hasAnyQueensConflicts()) {
+          queens = queens + 1;
+          if (board.hasAnyQueensConflicts()) {
             board.togglePiece(i, j);
-            queens = queens -1;
-            console.log('after removal = ', board.rows());
+            queens = queens - 1;
           }
         }
       }
     }
 
-    console.log('col after loops = ', col);
-    console.log('n after loops = ', n);
-    console.log('queens after loops = ', queens);
+    //this if-block checks if correct number of queens has been placed.
+    //it returns board if so.
     if (queens === n) {
       return board.rows();
-    } else if (col < n-1) {
-      col = col +1;
-      loopThru(0, col);
     }
-      /* else if (col >= n && row < n){
-        col = 0
-        row++
-        loopThru(row, col)
-      }*/
+
+    /*
+      the following two if-blocks ensure that each board square
+      is tested as a starting position.
+    */
+
+    //this if-block increases the column index of the FIRST QUEEN
+    if (col < n - 1) {
+      col = col + 1;
+      loopThru(row, col);
+    }
+
+    //this if-block increases the row index of the FIRST QUEEN
+    if (col === n - 1 && row < n -1) {
+      col = 0;
+      row = row + 1;
+      loopThru(row, col)
+    }
   };
 
   loopThru(0, 0);
 
-  /*
-  if(queens === n) {
-    return solution;
-  } else if (queens !== n) {
-    if (col < n) {
-      col++;
-      //and go back into the loops -->
-      //loopThru()
-    } else if (col >= n && row < n) {
-      row++;
-      col = 0;
-      //and go back into the loops -->
-      //loopThru()
-    }
-  }
-  */
-
-  this.console.log(`number of queens on board: ${queens}`)
-  console.log(`Solution: ${solution}`)
-  console.log(`** end of function **`)
+  this.console.log(`  number of queens on final board = ${queens}`)
   console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
+  console.log(`** end of function **`)
   return solution;
 };
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
 window.countNQueensSolutions = function(n) {
-  var solutionCount = undefined; //fixme
+/*
+ -- if queens = n, increment solutionCount.
+ -- jump out of the recursion with empty return, (or maybe break? check).
+ -- if we get through a row without placing a queen, remove last placed piece, place it on the next space without conflict.
+ -- so you need to end that recursive call(exit a failure basecase with a return), and do the work of removing that last placed piece.
+ -- if we reach the final square.
+
+after defining each base case, now define what you want each recursive call to do.
+
+*/
+
+
+
+
+  var solutionCount = 0; //fixme
+  // arr = [];
+
+  // if(row !== n-1 && col !== n-1) {
+  //   arr.push(board.findNQueensSolution(n, row, col));
+  //   solutionCount = solutionCount + 1;
+  // }
+  console.log(`NEW BOARD ==>`)
+  console.log('  input = ', n);
+  console.log('  algorithm running . . .')
+  let board = new Board({ n: n });
+  let solution = board.rows();
+  let queens = 0;
+  let arr = [];
+  let row = 0;
+  let col = 0;
+
+
+  /* this if-block checks for two specific cases that need no iteration */
+  if (n === 2 || n === 3) {
+    return solution;
+  }
+
+  var loopThru = function (row, col) {
+
+    /*
+      these loops interate through the board squares
+    */
+    for (var i = 0; i < n; i++) {
+      for (var j = 0; j < n; j++) {
+
+        /*
+          this if-block sets board afresh and places new FIRST QUEEN
+        */
+        if (i === 0 && j === 0) {
+
+          //this loop ensures board is set afresh
+          for (var k = 0; k < n; k++) {
+            board.attributes[k].fill(0);
+            queens = 0;
+          }
+
+          //sets FIRST QUEEN on fresh board.
+          //this Queen remians at this position within the i & j for-loops.
+          board.togglePiece(row, col);
+          queens = queens + 1;
+        }
+
+        /*
+          this if-block places a subsequent queen,
+          then checks for conflicts,
+          and removes subsequent queen if conflict is found
+        */
+        if (board.get(i)[j] === 0) {
+          board.togglePiece(i, j);
+          queens = queens + 1;
+          if (board.hasAnyQueensConflicts()) {
+            board.togglePiece(i, j);
+            queens = queens - 1;
+          }
+        }
+      }
+    }
+
+    //this if-block checks if correct number of queens has been placed.
+    //it returns board if so.
+    if (queens === n) {
+    //  arr.push(board.rows());
+      console.log('arr = ', arr);
+      solutionCount = solutionCount +1;
+      console.log('solutionCount = ', solutionCount);
+      if(row === n -1){
+        row = row +1;
+      }
+      col = col +1;
+      loopThru(row, col);
+      if(row === n -1 && col === n -1){
+        return solutionCount;
+      }
+    }
+
+    /*
+      the following two if-blocks ensure that each board square
+      is tested as a starting position.
+    */
+
+    //this if-block increases the column index of the FIRST QUEEN
+    if (col < n - 1) {
+      col = col + 1;
+      loopThru(row, col);
+    }
+
+    //this if-block increases the row index of the FIRST QUEEN
+    if (col === n - 1 && row < n -1) {
+      col = 0;
+      row = row + 1;
+      loopThru(row, col)
+    }
+  };
+
+  loopThru(row, col);
 
   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
   return solutionCount;
